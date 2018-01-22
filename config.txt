@@ -1,0 +1,12 @@
+[certstreamer]
+keywords=wellsfargo,paypal,login,sign-in,secure,update,money,sslsecure,amazon
+tlds=.ga,.gq,.ml,.cf,.tk,.xyz,.pw,.cc,.club,.work,.top,.support,.bank,.info,.study,.party,.click,.country,.stream,.gdn,.mom,.xin,.kim,.men,.loan,.download,.racing,.online,.ren,.gb,.win,.review,.vip,.party,.tech,.science
+
+[email]
+from_email=
+to_email=
+email_username=
+email_password=
+server=
+port=
+

@@ -8,24 +8,24 @@ It is meant to be a set and forget project, so that once configured correctly yo
 Please install these required packages.
 
 To send email with Gmail,Yahoo,Live you will have to enable this, you must be logged in:
-[Gmail](https://myaccount.google.com/lesssecureapps)
-[Yahoo](https://help.yahoo.com/kb/SLN27791.html)
-[Live](https://answers.microsoft.com/en-us/msoffice/forum/msoffice_outlook-mso_win10-mso_365hp/outlook-security/e92fbfb5-504e-4709-85ce-4996c5a6f14a?auth=1)
+* [Gmail](https://myaccount.google.com/lesssecureapps)
+* [Yahoo](https://help.yahoo.com/kb/SLN27791.html)
+* [Live](https://answers.microsoft.com/en-us/msoffice/forum/msoffice_outlook-mso_win10-mso_365hp/outlook-security/e92fbfb5-504e-4709-85ce-4996c5a6f14a?auth=1)
 
 **Python2/3**
 ```
-pip install certstream configparser subprocess argparse entropy datetime smtplib
+sudo pip install certstream configparser subprocess argparse entropy datetime smtplib
 ```
 
 **Configuration Example**
 
-Edit: config.txt
+**Edit: config.txt**
 
 Separate everything with a comma.
 ```
 [certstreamerz]
 #Fill in with keywords for your companies websites.
-keywords=google,facebook,paypal,paypol,.paypal,paypal.,-facebook,-facebook-,.google,.google-
+keywords=wellsfargo,paypal,login,sign-in,secure,update,money,sslsecure,amazon
 #You can add or take away from this TLD list.
 tlds=.ga,.gq,.ml,.cf,.tk,.xyz,.pw,.cc,.club,.work,.top,.support,.bank,.info,.study,.party,.click,.country,.stream,.gdn,.mom,.xin,.kim,.men,.loan,.download,.racing,.online,.ren,.gb,.win,.review,.vip,.party,.tech,.science
 ```
@@ -58,7 +58,9 @@ This makes two cron entries:
 It's currently set for every 24 hours, in future versions i will add the ability to set the alerting delay.
 
 ```shell
-git clone https://github.com/gunnerstahl/CertWatcher
+cd /opt/
+git clone https://github.com/gunnerstahl/CertWatcher.git
+cd CertWatcher
 python certwatcher.py -c install
 ```
 
@@ -73,6 +75,12 @@ python certwatcher.py -c start
 ```shell
 python certwatcher.py -c uninstall
 ```
+
+**Tested With**
+* [Kali](https://www.kali.org/)
+* [Ubuntu](https://www.ubuntu.com/)
+
+It should work on any linux os that can install Python/Cron
 
 **Future Updates**
 
