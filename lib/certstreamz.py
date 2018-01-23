@@ -167,11 +167,13 @@ class certstreams():
             date = initmisc.get_date()
             to_email = initmisc.get_email()
             pid = initmisc.get_pid()
+            psef = initmisc.get_ps()
             if 'No such file' in pid:
                 print(initcolor.WARNING + '[*] Service not running' + initcolor.ENDC)
                 """Starting Agent.py"""
                 initmisc.start_agent()
                 psef = initmisc.get_ps()
+                print(initcolor.WARNING + '[*] Adding pid File to /var/run/certwatcher.pid' + initcolor.ENDC)
                 with open('/var/run/certwatcher.pid', 'w') as pidder:
                     pidder.write(psef)
                     pidder.close()
@@ -180,29 +182,56 @@ class certstreams():
                 print(initcolor.OKBLUE + '[*] You can check for sites here: ' + initcolor.FAIL + '{0}/output/{1}.log'.format(pwd, date) + initcolor.ENDC)
                 print(initcolor.OKBLUE + '[*] Everyday you will get an email report to: ' + initcolor.FAIL +'{0}'.format(to_email) + initcolor.ENDC)
                 print(initcolor.WARNING + '[*] Exiting' + initcolor.ENDC)
-            else:
-                pid = initmisc.get_pid()
-                print(initcolor.OKBLUE + '[*] Service still running, Current PID: ' + initcolor.WARNING + '{0}'.format(pid) + initcolor.ENDC)
+            elif pid == '' or None:
+                psef = initmisc.get_ps()
+                if psef == '' or None:
+                    print(initcolor.WARNING + '[*] Service not running' + initcolor.ENDC)
+                    initmisc.start_agent()
+                    psef = initmisc.get_ps()
+                    print(initcolor.WARNING + '[*] Adding pid File to /var/run/certwatcher.pid' + initcolor.ENDC)
+                    with open('/var/run/certwatcher.pid', 'w') as pidder:
+                        pidder.write(psef)
+                        pidder.close()
+                    pid = initmisc.get_pid()
+                    print(initcolor.OKGREEN + '[*] Started Service, PID: ' + initcolor.WARNING + '{0}'.format(pid) + initcolor.ENDC)
+                    print(initcolor.OKBLUE + '[*] You can check for sites here: ' + initcolor.FAIL + '{0}/output/{1}.log'.format(pwd, date) + initcolor.ENDC)
+                    print(initcolor.OKBLUE + '[*] Everyday you will get an email report to: ' + initcolor.FAIL + '{0}'.format(to_email) + initcolor.ENDC)
+                    print(initcolor.WARNING + '[*] Exiting' + initcolor.ENDC)
+            elif pid or psef != '' or None:
+                if pid != '' or None:
+                    print(initcolor.OKGREEN + '[*] CertWatcher is already Running, PID: ' + initcolor.WARNING + '{0}'.format(pid) + initcolor.ENDC)
+                else:
+                    print(initcolor.OKGREEN + '[*] CertWatcher is already Running, PID: ' + initcolor.WARNING + '{0}'.format(psef) + initcolor.ENDC)
                 print(initcolor.OKBLUE + '[*] You can check for sites here: ' + initcolor.FAIL + '{0}/output/{1}.log'.format(pwd, date) + initcolor.ENDC)
-                print(initcolor.OKBLUE + '[*] Everyday you will get an email report to: ' + initcolor.OKGREEN +'{0}'.format(to_email) + initcolor.ENDC)
+                print(initcolor.OKBLUE + '[*] Everyday you will get an email report to: ' + initcolor.FAIL + '{0}'.format(to_email) + initcolor.ENDC)
+                print(initcolor.WARNING + '[*] Exiting' + initcolor.ENDC)
+            else:
+                print(initcolor.FAIL + '[-] Could not find a pid or running process of the agent, also could not start it' + initcolor.ENDC)
                 print(initcolor.WARNING + '[*] Exiting' + initcolor.ENDC)
         except Exception as R:
             print(initcolor.FAIL + '[-] Failed to Start CertWatcher: ' + initcolor.WARNING + '{0}'.format(R) + initcolor.ENDC)
 
     def cert_service_stop(self):
         try:
-            cat_pid = initmisc.get_pwd()
+            cat_pid = initmisc.get_pid()
             psef = initmisc.get_ps()
-            if cat_pid != '':
-                print(initcolor.OKBLUE + 'Found CertWatcher PID:' + initcolor.WARNING + '{0}'.format(cat_pid) + initcolor.ENDC)
+            psef = psef.strip('\n')
+            if cat_pid != '' or None:
+                print('1')
+                print(initcolor.OKBLUE + 'Found CertWatcher PID: ' + initcolor.WARNING + '{0}'.format(cat_pid) + initcolor.ENDC)
                 print(initcolor.OKBLUE + 'Stopping CertWatcher' + initcolor.ENDC)
                 subprocess.Popen(['kill {0}'.format(cat_pid)], shell=True, stdout=FNULL, stderr=FNULL)
-            elif psef != '':
-                print(initcolor.OKBLUE + 'Found CertWatcher PID:' + initcolor.WARNING + '{0}'.format(psef) + initcolor.ENDC)
+                subprocess.Popen(['> /var/run/certwatcher.pid'], shell=True, stdout=FNULL, stderr=FNULL)
+            elif psef != '' or None:
+                print('2')
+                print(initcolor.OKBLUE + 'Found CertWatcher PID: ' + initcolor.WARNING + '{0}'.format(psef) + initcolor.ENDC)
                 print(initcolor.OKBLUE + 'Stopping CertWatcher' + initcolor.ENDC)
                 subprocess.Popen(['kill {0}'.format(psef)], shell=True, stdout=FNULL, stderr=FNULL)
+                subprocess.Popen(['> /var/run/certwatcher.pid'], shell=True, stdout=FNULL, stderr=FNULL)
+            else:
+                print(initcolor.OKBLUE + 'CertWatcher is already stopped' + initcolor.ENDC)
         except Exception as R:
-            print(initcolor.FAIL + '[-] Failed to stop CertStream Service:' + initcolor.WARNING + '{0}'.format(R) + initcolor.ENDC)
+            print(initcolor.FAIL + '[-] Failed to stop CertStream Service: ' + initcolor.WARNING + '{0}'.format(R) + initcolor.ENDC)
 
     def cert_service_restart(self):
         try:

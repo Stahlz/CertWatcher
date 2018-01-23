@@ -78,11 +78,13 @@ class redundant():
 
     def get_pid(self):
         pid = subprocess.Popen(['cat', '/var/run/certwatcher.pid'], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout = pid.stdout.read().decode('utf-8').strip()
-        stderr = pid.stderr.read().decode('utf-8').strip()
+        stdout = pid.stdout.read().decode('utf-8')
+        stderr = pid.stderr.read().decode('utf-8')
+        stdout = str(stdout)
+        stderr = str(stderr)
         if stdout != '':
             return stdout
-        elif stderr != '':
+        if stderr != '':
             return stderr
 
     def get_ps(self):
