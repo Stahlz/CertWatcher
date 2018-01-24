@@ -36,19 +36,19 @@ parser.add_argument('-c','--certstream', dest='cert_init', choices=['start', 'st
 args = parser.parse_args()
 
 if args.cert_init == 'start':
-    print(initcolor.OKGREEN + '[*] Starting CertStream Service' + initcolor.ENDC)
+    print(initcolor.OKGREEN + '[*] Attempting to start CertWatcher service' + initcolor.ENDC)
     initcert.cert_service_start()
 elif args.cert_init == 'stop':
-    print(initcolor.OKGREEN + '[*] Stopping CertStream Service' + initcolor.ENDC)
+    print(initcolor.OKGREEN + '[*] Attempting to stop CertWatcher service' + initcolor.ENDC)
     initcert.cert_service_stop()
 elif args.cert_init == 'restart':
-    print(initcolor.OKGREEN + '[*] Restarting CertStream Service' + initcolor.ENDC)
+    print(initcolor.OKGREEN + '[*] Trying to restart CertWatcher service' + initcolor.ENDC)
     initcert.cert_service_restart()
 elif args.cert_init == 'install':
-    print(initcolor.OKGREEN + '[*] Installing CertStream Service' + initcolor.ENDC)
+    print(initcolor.OKGREEN + '[*] Attempting to uninstall CertWatcher service' + initcolor.ENDC)
     initcert.cert_service_install()
 elif args.cert_init == 'uninstall':
-    print(initcolor.OKGREEN + '[*] Restarting CertStream Service' + initcolor.ENDC)
+    print(initcolor.OKGREEN + '[*] Attempting to install CertWatcher service' + initcolor.ENDC)
     initcert.cert_service_uninstall()
 else:
     print(initcolor.FAIL + '[-] You must give a valid choice' + initcolor.ENDC)
