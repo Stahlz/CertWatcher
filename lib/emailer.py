@@ -4,6 +4,11 @@ from email.MIMEText import MIMEText
 import configparser
 import datetime
 from misc import redundant
+import os
+import subprocess
+
+global FNULL
+FNULL = open(os.devnull, 'w')
 
 initmisc = redundant()
 today = initmisc.get_date()
@@ -16,17 +21,18 @@ configfilepath = '{0}/config.txt'.format(get_pwd)
 config = configparser.ConfigParser()
 config.read(configfilepath)
 
-url_list = []
+
 read_file_name = '{0}/output/'.format(get_pwd) + yesterdays_date +'_CertStream' + '.log'
 
+"""Using two lists for deduping"""
 try:
-    with open(read_file_name, 'r') as spliter:
-        output = spliter.read()
-        url_list.append(output)
-    splitted = ''.join(url_list)
-    del url_list
-except:
-    print('[-] Problem with opening file: {0}'.format(write_file_name))
+    command = 'sed -i \'s/*.//g\' {0}'.format(read_file_name)
+    subprocess.Popen([command], shell=True, stdout=FNULL, stderr=FNULL)
+    sort = subprocess.Popen(['sort {0} | uniq -d'.format(read_file_name)], shell=True, stdout=subprocess.PIPE, stderr=FNULL)
+    sort = sort.stdout.read().decode('utf-8')
+    splitted = ''.join(sort)
+except Exception as errors:
+    print('[-] Problem with opening file: {0}'.format(errors))
 
 from_email = config.get('email','from_email')
 to_email = config.get('email','to_email')
