@@ -24,10 +24,11 @@ config.read(configfilepath)
 
 read_file_name = '{0}/output/'.format(get_pwd) + yesterdays_date +'_CertStream' + '.log'
 
-"""Using two lists for deduping"""
+"""To dedupe the list"""
 try:
     command = 'sed -i \'s/*.//g\' {0}'.format(read_file_name)
-    subprocess.Popen([command], shell=True, stdout=FNULL, stderr=FNULL)
+    fix_file = subprocess.Popen([command], shell=True, stdout=FNULL, stderr=FNULL)
+    fix_file = fix_file.wait()
     sort = subprocess.Popen(['sort {0} | uniq -d'.format(read_file_name)], shell=True, stdout=subprocess.PIPE, stderr=FNULL)
     sort = sort.stdout.read().decode('utf-8')
     splitted = ''.join(sort)
