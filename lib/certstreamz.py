@@ -30,7 +30,7 @@ class certstreams():
 
         """Checks for crontab"""
         if get_user != None:
-            look_for_crontab = subprocess.Popen(['ls', '/var/spool/cron/crontabs/{0}'.format(get_user)], shell=False, stdout=subprocess.PIPE)
+            look_for_crontab = subprocess.Popen(['ls', '/var/spool/cron/crontabs/{0}'.format(get_user)], shell=False, stdout=subprocess.PIPE, stderr=FNULL)
             look_for_crontab = look_for_crontab.stdout.read().decode('utf-8')
             if 'cannot access' in look_for_crontab:
                 print(initcolor.WARNING + '[-] Crontab for user {0} Does not exist'.format(get_user) + initcolor.ENDC)
@@ -169,7 +169,6 @@ class certstreams():
             pid = initmisc.get_pid().strip()
             psef = initmisc.get_ps().strip()
             if 'No such file' in pid:
-                print('1')
                 print(initcolor.WARNING + '[*] Service not running' + initcolor.ENDC)
                 """Starting Agent.py"""
                 initmisc.start_agent()
@@ -184,7 +183,6 @@ class certstreams():
                 print(initcolor.OKBLUE + '[*] Everyday you will get an email report to: ' + initcolor.FAIL +'{0}'.format(to_email) + initcolor.ENDC)
                 print(initcolor.WARNING + '[*] Exiting' + initcolor.ENDC)
             elif pid == 'empty':
-                print('1.5')
                 print(initcolor.WARNING + '[*] Service not running' + initcolor.ENDC)
                 """Starting Agent.py"""
                 initmisc.start_agent()
