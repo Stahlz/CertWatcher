@@ -44,9 +44,10 @@ class certstreams():
                 cat_cron = cat_cron.stdout.read().decode('utf-8')
                 if '{0}/certwatcher.py'.format(pwd) and 'emailer.py' not in cat_cron:
                     try:
+                        alert_interval = initmisc.email_alert_intervals()
                         """I hated having to do it this way"""
                         cert_restart_cron = 'echo "0 0 * * * cd {0}; python {0}/certwatcher.py -c restart" >> /var/spool/cron/crontabs/{1}'.format(pwd, get_user)
-                        cert_email_cron = 'echo "0 0 * * * cd {0}; python {0}/lib/emailer.py" >> /var/spool/cron/crontabs/{1}'.format(pwd, get_user)
+                        cert_email_cron = 'echo "0 {2} * * * cd {0}; python {0}/lib/emailer.py" >> /var/spool/cron/crontabs/{1}'.format(pwd, get_user, alert_interval)
                         subprocess.Popen(cert_restart_cron, shell=True)
                         subprocess.Popen(cert_email_cron, shell=True)
                         print(initcolor.OKBLUE + '[*] Writing Restart and Email Cron Entries' + initcolor.ENDC)
@@ -59,7 +60,7 @@ class certstreams():
                     cron_check = True
                 elif ['{0}/certwatcher.py'.format(pwd) in cat_cron] and ['emailer.py' not in cat_cron]:
                     try:
-                        cert_email_cron = 'echo "0 0 * * * cd {0}; python {0}/lib/emailer.py" >> /var/spool/cron/crontabs/{1}'.format(pwd, get_user) + '\n'
+                        cert_email_cron = 'echo "0 {2} * * * cd {0}; python {0}/lib/emailer.py" >> /var/spool/cron/crontabs/{1}'.format(pwd, get_user, alert_interval) + '\n'
                         subprocess.Popen(cert_email_cron, shell=True)
                         cron_check = True
                         print(initcolor.OKBLUE + '[*] Writing Emailer cron entry' + initcolor.ENDC)
@@ -92,6 +93,7 @@ class certstreams():
         try:
             get_user = initmisc.get_user()
             pwd = initmisc.get_pwd()
+            alert_interval = initmisc.email_alert_intervals()
             user_check = True
             print(initcolor.OKBLUE + '[*] Grabbing Current User' + initcolor.ENDC)
         except Exception as uninstall_user:
@@ -120,7 +122,7 @@ class certstreams():
                             r.close()
                             print(initcolor.OKBLUE + '[*] Removing restart and emailer Cron objects from: {0}'.format(cron_file) + initcolor.ENDC)
                         with open(cron_file, 'w') as s:
-                            replace_cron = read_cron.replace('0 0 * * * cd {0}; python {0}/lib/emailer.py'.format(pwd), '')
+                            replace_cron = read_cron.replace('0 {1} * * * cd {0}; python {0}/lib/emailer.py'.format(pwd, alert_interval), '')
                             s.write(replace_cron)
                             s.close()
                             replace_cron = True
@@ -141,7 +143,7 @@ class certstreams():
                 elif ['{0}/certwatcher.py'.format(pwd) not in read_cron] and ['emailer.py' in read_cron]:
                     try:
                         with open(cron_file, 'w') as r:
-                            read_cron = read_cron.replace('0 0 * * * cd {0}; python {0}/lib/emailer.py'.format(pwd), '')
+                            read_cron = read_cron.replace('0 {1} * * * cd {0}; python {0}/lib/emailer.py'.format(pwd, alert_interval), '')
                             r.write(read_cron)
                             r.close()
                             print(initcolor.OKBLUE + '[*] Removing Emailer Cron object from: {0}'.format(cron_file) + initcolor.ENDC)

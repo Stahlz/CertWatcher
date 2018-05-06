@@ -1,6 +1,9 @@
 [certstreamer]
 keywords=wellsfargo,paypal,login,sign-in,secure,update,money,sslsecure,amazon
-tlds=.ga,.gq,.ml,.cf,.tk,.xyz,.pw,.cc,.club,.work,.top,.support,.bank,.info,.study,.party,.click,.country,.stream,.gdn,.mom,.xin,.kim,.men,.loan,.download,.racing,.online,.ren,.gb,.win,.review,.vip,.party,.tech,.science
+tlds=.ga,.gq,.ml,.cf,.tk,.xyz,.pw,.cc,.club,.work,.top,.support,.bank,.info,.study,.party,.click,.country,.stream,.gdn,.mom,.xin,.kim,.men,.loan,.download,.racing,.online,.ren,.gb,.win,.review,.vip,.party,.tech,.science,.com,.net,.org,.io
+#Default is 24 hours, represented by 0
+#Change to 1 to recieve an email every hour, or 3 to recieve one every 3 hours..
+email_report_interval=0
 
 [email]
 from_email=

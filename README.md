@@ -12,9 +12,9 @@ To send email with Gmail,Yahoo,Live you will have to enable this, you must be lo
 * [Yahoo](https://help.yahoo.com/kb/SLN27791.html)
 * [Live](https://answers.microsoft.com/en-us/msoffice/forum/msoffice_outlook-mso_win10-mso_365hp/outlook-security/e92fbfb5-504e-4709-85ce-4996c5a6f14a?auth=1)
 
-**Python2/3**
+**Python3**
 ```
-sudo pip install certstream configparser subprocess argparse entropy datetime smtplib
+sudo pip install argparse entropy datetime certstream configparser
 ```
 
 **Configuration Example**

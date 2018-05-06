@@ -99,3 +99,12 @@ class redundant():
         pwd = pwd.strip('lib')
         subprocess.Popen(['bash', '{0}/lib/bashscripts/start.sh'.format(pwd), pwd], shell=False, stdout=FNULL, stderr=FNULL)
 
+    def email_alert_intervals(self):
+        pwd = subprocess.Popen(['pwd'], shell=True, stdout=subprocess.PIPE)
+        pwd = pwd.stdout.read().decode('utf-8').strip('\n')
+        pwd = pwd.strip('lib')
+        configfilepath = '{0}/config.txt'.format(pwd)
+        config = configparser.ConfigParser()
+        config.read(configfilepath)
+        email_interval = config.get('certstreamer', 'email_report_interval')
+        return email_interval
