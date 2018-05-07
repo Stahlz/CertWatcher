@@ -28,6 +28,7 @@ Separate everything with a comma.
 keywords=wellsfargo,paypal,login,sign-in,secure,update,money,sslsecure,amazon
 #You can add or take away from this TLD list.
 tlds=.ga,.gq,.ml,.cf,.tk,.xyz,.pw,.cc,.club,.work,.top,.support,.bank,.info,.study,.party,.click,.country,.stream,.gdn,.mom,.xin,.kim,.men,.loan,.download,.racing,.online,.ren,.gb,.win,.review,.vip,.party,.tech,.science
+email_report_interval=0
 ```
 ```
 [email]
@@ -53,9 +54,7 @@ optional arguments:
 
 This makes two cron entries:
 1) To restart the script every 24 Hours.
-2) To send you an email every 24 hours with a list of Phishing sites to check out.
-
-It's currently set for every 24 hours, in future versions i will add the ability to set the alerting delay.
+2) To send you an email on your hourly interval with a list of Phishing sites to check out.
 
 ```shell
 cd /opt/
