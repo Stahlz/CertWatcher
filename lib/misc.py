@@ -78,8 +78,8 @@ class redundant():
 
     def get_pid(self):
         pid = subprocess.Popen(['cat', '/var/run/certwatcher.pid'], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout = pid.stdout.read().decode('utf-8')
-        stderr = pid.stderr.read().decode('utf-8')
+        stdout = pid.stdout.read().decode('utf-8').strip()
+        stderr = pid.stderr.read().decode('utf-8').strip()
         stdout = str(stdout)
         stderr = str(stderr)
         if stdout != '':
@@ -91,7 +91,10 @@ class redundant():
         command = 'ps -ef | grep agent.py | grep -v \'grep\' | awk \'{print $2}\''
         psef = subprocess.Popen([command], shell=True, stdout=subprocess.PIPE)
         psef = psef.stdout.read().decode('utf-8').strip()
-        return psef
+        if psef != '' or None:
+            return psef
+        else:
+            return None
 
     def start_agent(self):
         pwd = subprocess.Popen(['pwd'], shell=True, stdout=subprocess.PIPE)
@@ -108,3 +111,15 @@ class redundant():
         config.read(configfilepath)
         email_interval = config.get('certstreamer', 'email_report_interval')
         return email_interval
+    
+    def kill_multiple_pids(self):
+        pids = []
+        command = 'ps -ef | grep agent.py | grep -v \'grep\' | awk \'{print $2}\''
+        psef = subprocess.Popen([command], shell=True, stdout=subprocess.PIPE)
+        psef = psef.stdout.read().decode('utf-8').strip().split()
+        for i in psef:
+            pids.append(i)
+        for i in pids:
+            command = 'kill {0}'.format(i)
+            kill_pids = subprocess.Popen([command], shell=True, stdout=subprocess.PIPE)
+        subprocess.Popen(['echo "empty" > /var/run/certwatcher.pid'], shell=True, stdout=FNULL, stderr=FNULL)
