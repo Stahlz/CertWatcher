@@ -71,4 +71,4 @@ def callback(message, context):
                     "{0} :score={1})".format(domain, score))
 
 
-certstream.listen_for_events(callback, url='wss://certstream.calidog.io/)
+certstream.listen_for_events(callback, url='wss://certstream.calidog.io/')
